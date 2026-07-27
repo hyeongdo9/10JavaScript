@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 계산 과정을 저장할 배열
+    var fibSteps = [];
+
+    // 계산 과정을 출력하는 피보나치 함수
+    function fibonacciWithSteps(n) {
+      if (n <= 0) {
+        fibSteps.push(`fibonacci(0) = 0`);
+        return 0;
+      } else if (n === 1) {
+        fibSteps.push(`fibonacci(1) = 1`);
+        return 1;
+      } else {
+        fibSteps.push(`fibonacci(${n}) = fibonacci(${n-1}) + fibonacci(${n-2})`);
+        let a = fibonacciWithSteps(n - 1);
+        let b = fibonacciWithSteps(n - 2);
+        fibSteps.push(`--> 계산됨: fibonacci(${n}) = ${a} + ${b} = ${a+b}`);
+        return a + b;
+      }
+    }
+
+    // 입력 폼 생성
+    document.write('<label>피보나치 수(정수)를 입력하세요: <input type="number" id="fibInput" min="0" value="10"></label>');
+    document.write('<button onclick="calculateFibonacci()">결과 보기</button>');
+    document.write('<div id="fibResult" style="margin-top:10px;"></div>');
+    document.write('<div id="fibSteps" style="margin-top:10px; font-family: monospace; white-space:pre;"></div>');
+
+    // 결과 계산 및 출력 함수
+    function calculateFibonacci() {
+      var n = parseInt(document.getElementById('fibInput').value);
+      fibSteps = []; // 과정 초기화
+      var result = fibonacciWithSteps(n);
+      document.getElementById('fibResult').innerHTML = n + '번째 피보나치 수는 <b>' + result + '</b>입니다.';
+      document.getElementById('fibSteps').innerHTML = "<b>계산 과정:</b>\n" + fibSteps.join('\n');
+    }
+  </script>
+</body>
+</html>
+

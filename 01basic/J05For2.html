@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+			function gugudanPrint(){
+					//사용자가 선택한 단과 수를 얻어와서 변수에 저장 
+					var dan = document.getElementById("dan").value;
+					var su = document.getElementById("su").value;   
+					//table 태그를 저장할 string 타입의 변수 
+					var strGugu = "<table border='1'>";
+					//단의 반복(행이므로 tr이 반복) 
+					for(var x=2 ; x<=dan ; x++){
+							strGugu += "<tr>";
+							//수의 반복(열이므로 td로 반복) 
+							for(var y=1 ; y<=su ; y++){
+									strGugu += "<td>"+ x +"*"+ y + "="+ (x*y) +"</td>";
+							}                
+							strGugu += "</tr>";			
+					}
+					strGugu += "</table>";
+					//span태그로 지정한 영역에 구구단 삽입 
+					document.getElementById("here_gugudan").innerHTML = strGugu;			
+			}
+		 
+    </script>
+</head>
+<body>
+    <h2>반복문 활용</h2>
+    <div>
+			<!-- 구구단을 table태그로 만든 문자열을 innerHTML을 통해 삽입할 엘리먼트  -->
+			<span id="here_gugudan">
+				구구단은 여기에 출력됩니다.
+			</span>
+		</div>
+    <table border=1>
+		<tr>
+			<td>단</td>
+			<td>
+				<!-- 2~9단까지 선택할 수 있도록 설정 -->
+				<input type="range" id="dan" min="2" max="9" />
+				<!-- <span id="rangeValue">6</span>  -->
+			</td>
+		</tr>
+		<tr>
+			<td>수</td>
+			<td>
+				<!-- select>option*9 -->
+				<select id="su">
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="button" value="구구단출력" 
+					onclick="gugudanPrint();" />
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
+
+
+

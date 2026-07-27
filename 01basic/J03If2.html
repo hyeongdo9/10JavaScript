@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+    function getGrade(){
+        /*
+        국,영,수 입력상자에 입력한 값을 얻어온 후 number타입으로 변환. input태그에 입력된 값은 value속성을 통해 얻어올 수 있다. */
+        var kor = parseInt(document.getElementById("kor").value);	
+        var eng = parseInt(document.getElementById("eng").value);
+        var math = parseInt(document.getElementById("math").value);
+        //점수의 평균 계산 
+        var avg = (kor+eng+math) / 3;
+        var strGrade="";   
+        //계산된 결과를 통해 학점 판단          
+        if(avg>=90) strGrade="A학점";
+        else if(avg>=80) strGrade="B학점";
+        else if(avg>=70) strGrade="C학점";
+        else if(avg>=60) strGrade="D학점";
+        else strGrade="<strike>F학점</strike>";
+        /* 특히 F학점의 경우 최소선 표시를 위해 strike 태그를 사용함. del태그도 동일한 마크업 효과가 있다. */
+
+        /*
+        시작태그와 종료태그가 있는 모든 태그에 존재하는 속성으로 태그 사이의 컨텐츠를 얻어오거나 삽입할때 사용한다. 
+        innerHTML : 마크업을 반영해서 화면에 렌더링
+        innerText : 마크업이 반영되지 않고 순수한 텍스트를 출력한다. 만약 태그가 포함된 문자열이라면 태그를 그대로 화면에 출력한다. 
+        */
+        document.getElementById("gradePrint").innerHTML = strGrade;   
+        document.getElementById("gradePrint").innerText = strGrade;   
+    }
+    </script>
+</head>
+<body>
+    <h2>조건문 - if문</h2>
+    <!-- 각 입력상자에는 id속성이 부여되어 있다. 이 속성은 HTML  문서내에서 한번씩만 사용해야한다.  -->
+    <table border="1">
+        <tr>
+            <td>국어</td>
+            <td><input type="text" id="kor" /></td>
+        </tr>
+        <tr>
+            <td>영어</td>
+            <td><input type="text" id="eng" /></td>
+        </tr>
+        <tr>
+            <td>수학</td>
+            <td><input type="text" id="math" /></td>
+        </tr>
+        <tr>
+            <td>학점</td>
+            <!-- <td>에 id를 부여해서 학점을 출력 -->
+            <td id="gradePrint">학점은 요기에@.@</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center;">
+                <!-- 이 버튼을 클릭하면 JS에 정의된 함수를 호출한다. -->
+                <button type="button" onclick="getGrade();">
+                    학점계산하기</button>
+            </td> 
+        </tr>
+    </table>
+</body>
+</html>
+
+
