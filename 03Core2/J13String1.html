@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    <h2>JS의 Core객체 - String</h2>
+    <script>
+        /*
+        Javascript에서는 문자열 선언시 더블 혹은 싱글쿼테이션 모두
+        사용할 수 있다. 즉 문자와 문자열의 차이가 없다. 
+        */
+        var str1 = "Hello Javascript";
+        var str2 = '안녕 자바스크립트';
+        var str3 = new String("Hi 자바스크립트");
+
+        //문자열의 길이 반환
+        console.log("str1의길이:", str1.length);
+
+        /*
+        인수로 주어진 인덱스에 해당하는 문자 하나를 반환한다.
+        '아이디검증'과 같은 기능을 구현할때 사용 */
+        console.error("chatAt()");
+        console.log(str1.charAt(1)); // str1의 값에서 1번 인덱스이므로 결과 e가 출력된다.
+
+        //문자열잘라내기1 : 인덱스 3부터 7앞부분까지 잘라낸다.
+        console.error("substring()");
+        console.log("Academy".substring(3, 7));
+
+        //문자열잘라내기2 : 인덱스 3부터 4byte를 잘라낸다. 
+        console.error("substr()");
+        console.log('Academy'.substr(3, 4));
+
+        //특정 인덱스에 해당하는 문자의 아스키코드 값 반환
+        console.error("charCodeAt()");
+        console.log("Academy".charCodeAt(1)); //결과 : 99 (c의 아스키코드 값)
+
+        //아스키코드를 문자로 변경해서 반환 
+        console.error("String.fromCharCode()");
+        console.log(String.fromCharCode(67)); //결과 : 대문자C (67은 C의 아스키코드 값)
+        console.log(String.fromCharCode(99)); //결과 : 소문자c (99은 c의 아스키코드 값)
+
+        /*
+        문자열은 별도의 변환없이 배열처럼 인덱스로 접근할 수 있다.
+        단, 접근은 가능하지만 변경할수는 없다. 변경시에는 별도의
+        변환함수를 사용해야한다.
+        */
+        console.error("문자열을 배열처럼 사용하기");
+        for (var i = 0; i < str2.length; i++) {
+            console.log("str2[" + i + "] =" + str2[i] + "<br>");
+        }
+    </script>
+    <script>
+      /*
+        퀴즈]나이를 매개변수로 받아 아래와같은 결과를 반환하는 함수를
+        정의하시오. 만약 나이가 숫자형식이 아니면 false, 숫자형식이면 
+        true를 반환한다. 반환받은 결과를 이용하여 '숫자형식입니다.' 
+        혹은 '숫자형식이아닙니다'라는 문자열을 출력하는 프로그램을 
+        작성하시오
+      */
+        //나이를 문자열로 보고, 각 문자의 아스키코드가 숫자('0'~'9')인지 검사
+        function checkAge(age) {
+            age = String(age);
+            if (age.length === 0) {
+                return false;
+            }
+            for (var i = 0; i < age.length; i++) {
+                var code = age.charCodeAt(i);
+                // '0'=48, '9'=57. 이 범위를 벗어나면 숫자형식이 아님
+                if (code < 48 || code > 57) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //여러 값으로 테스트 (true / false / true)
+        var ages = [20, "스무살", "30"];
+        for (var i = 0; i < ages.length; i++) {
+            var result = checkAge(ages[i]);
+            if (result) {
+                console.log(ages[i] + " : 숫자형식입니다.");
+            } else {
+                console.log(ages[i] + " : 숫자형식이아닙니다.");
+            }
+            console.log("result :", result);
+        }
+        /*
+        result : true
+        result : false
+        result : true 
+        */
+    </script>
+</body>
+</html>
