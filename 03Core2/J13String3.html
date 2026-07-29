@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+        퀴즈] 아래 이메일 주소에서 @와 .사이에 있는값만
+        추출하여 출력하는 프로그램을 작성하시오.
+        xxx@yyy.co.kr 이라면 yyy만 출력되어야 한다.
+    */
+    var emails = [
+      "kim@naver.com",
+      "sung@hanmail.net",
+      "park@ikosmo.co.kr"
+    ];
+
+    for (var i = 0; i < emails.length; i++) {
+      var email = emails[i];
+      // @의 위치와, @ 이후 첫 번째 .의 위치를 구한다
+      var atIndex = email.indexOf("@");
+      var dotIndex = email.indexOf(".", atIndex);
+      // @ 다음부터 . 직전까지 잘라내면 도메인명만 남는다
+      var domain = email.substring(atIndex + 1, dotIndex);
+      console.log(email + " → " + domain);
+    }
+    /*
+      [for문 전체 해석]
+      1) for (var i = 0; i < emails.length; i++)
+         - i를 0부터 시작해 emails 배열 길이(3)보다 작을 때까지 1씩 증가하며 반복한다.
+         - 즉, i = 0, 1, 2 로 총 3번 실행된다.
+
+      2) var email = emails[i];
+         - 현재 인덱스의 이메일 문자열을 email 변수에 담는다.
+         - 예: i=0 → "kim@naver.com", i=1 → "sung@hanmail.net", i=2 → "park@ikosmo.co.kr"
+
+      3) var atIndex = email.indexOf("@");
+         - 이메일에서 "@"가 처음 나타나는 위치(인덱스)를 구한다.
+         - 예: "kim@naver.com" → @는 3번 인덱스 → atIndex = 3
+
+      4) var dotIndex = email.indexOf(".", atIndex);
+         - atIndex 위치부터 오른쪽으로 검색하여 첫 번째 "."의 인덱스를 구한다.
+         - @ 앞에서 검색하지 않도록 시작 위치를 atIndex로 지정한다.
+         - 예: "kim@naver.com" → @ 이후 첫 "."는 9번 인덱스 → dotIndex = 9
+         - 예: "park@ikosmo.co.kr" → @ 이후 첫 "."는 "ikosmo" 뒤 → ikosmo만 자를 수 있다.
+
+      5) var domain = email.substring(atIndex + 1, dotIndex);
+         - substring(시작, 끝)은 시작 인덱스부터 끝 인덱스 직전까지 잘라낸다.
+         - atIndex + 1 : "@" 다음 문자부터 시작
+         - dotIndex : "." 직전까지
+         - 결과적으로 "@"와 "." 사이의 문자열만 얻는다.
+         - 예: "kim@naver.com" → substring(4, 9) → "naver"
+
+      6) console.log(email + " → " + domain);
+         - 원본 이메일과 추출한 도메인명을 콘솔에 출력한다.
+         - 최종 출력 예:
+           kim@naver.com → naver
+           sung@hanmail.net → hanmail
+           park@ikosmo.co.kr → ikosmo
+    */
+  </script>
+</body>
+</html>

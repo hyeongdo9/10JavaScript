@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+  //전역변수 : 색깔로 구성된 배열
+  var myColor = ['red', 'green', 'blue', 'violet'];
+  var cnt = 0;
+  function createDOM(){
+      //body 태그의 DOM을 얻어옴
+      var myBody = document.getElementById("myBody");
+      //div 엘리먼트를 동적으로 생성 
+      var newDiv = document.createElement("div");
+      //div 태그 사이에 텍스트 추가
+      newDiv.innerHTML = "새로 생성된 div입니다.";
+      //id속성 및 속성값 추가 
+      newDiv.setAttribute("id", "mydiv");
+      /* 배경색 지정시 증가연산자가 전위에 있으므로 cnt의 값이 먼저
+      증가한 후 4로 %연산한다. 그러면 0~3까지 토글된다. */
+      newDiv.style.backgroundColor = myColor[++cnt%4];
+      //마우스 커서의 모양을 손가락으로 지정
+      newDiv.style.cursor = 'pointer';
+      //생성된 div에 click 이벤트핸들러 추가
+      newDiv.onclick = function(){
+          //클릭한 요소의 부모요소를 얻어와서 변수에 저장. 즉 body태그.
+          var pe = this.parentElement;
+          //pe의 자식요소 중 this를 제거한다.
+          pe.removeChild(this);
+          //즉 클릭한 div 태그 자신을 동적으로 삭제한다. 
+      };
+      //body 태그 하위에 자식요소로 div를 추가한다. 
+      myBody.appendChild(newDiv);
+  }
+  </script>
+</head>
+<body id="myBody">
+  <h3>DOM 동적 추가/삭제</h3>
+  <a href="javascript:createDOM()">동적생성</a>
+</body>
+</html>
