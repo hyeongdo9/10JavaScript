@@ -1,0 +1,96 @@
+<!-- 
+퀴즈] 아래 트럼프 이미지에 마우스를 
+	오버했을때 2.jpg로 교체한다. ⇒ mouseoverFunc()
+	아웃했을때 1.jpg로 교체한다. ⇒ mouseoutFunc()
+
+	다운했을때 이미지크기를 2배로 늘린다. ⇒ mousedownFunc()
+	업했을때 이미지크기를 원래대로 돌린다. ⇒ mouseupFunc()
+
+오버와 아웃은 <img> 태그에 이벤트 리스너가 부착되어 있다. 
+다운과 업은 getElementById()와 addEventListener()를 이용해서 구현한다. 
+ -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마우스 이벤트 퀴즈</title>
+</head>
+<body>
+  <h3>이미지에 마우스 이벤트 적용하기</h3>
+
+  <!-- 
+  [이벤트 연결 방법 1] HTML 태그에 직접 적기
+  - onmouseover : 마우스를 이미지 위에 올리면 실행
+  - onmouseout  : 마우스가 이미지에서 벗어나면 실행
+  - this        : "지금 이벤트가 일어난 바로 이 태그"를 뜻함
+                  여기서는 아래 <img> 태그를 함수로 넘겨준다.
+  -->
+  <!--
+  [방법 A] this(obj) 방식
+    onmouseover="mouseoverFunc(this);"
+    → 함수 안에서 obj.src = "..." 로 바로 사용
+
+  [방법 B] let 방식 (아래 코드)
+    onmouseover="mouseoverFunc();"
+    → 함수 안에서 let으로 이미지를 다시 찾아서 사용
+  -->
+  <img id="trump" src="../images/1.jpg" alt="하트"
+    style="width:225px;height:313px;"
+    onmouseover="mouseoverFunc();"
+    onmouseout="mouseoutFunc();" />
+
+  <script>
+    // 마우스를 올리면 실행되는 함수 (let 방식)
+    function mouseoverFunc(){
+      let img = document.getElementById("trump");
+      // 이미지 파일 경로(src)를 2.jpg로 바꾼다
+      img.src = "../images/2.jpg";
+    }
+
+    // 마우스가 벗어나면 실행되는 함수 (let 방식)
+    function mouseoutFunc(){
+      let img = document.getElementById("trump");
+      // 다시 원래 이미지(1.jpg)로 바꾼다
+      img.src = "../images/1.jpg";
+    }
+
+    // 마우스를 누르고 있을 때 실행되는 함수
+    function mousedownFunc(){
+      // id가 trump인 이미지를 찾는다
+      let img = document.getElementById("trump");
+      // 가로, 세로를 2배로 키운다 (225→450, 313→626)
+      img.style.width = "450px";
+      img.style.height = "626px";
+    }
+
+    // 마우스 버튼을 떼면 실행되는 함수
+    function mouseupFunc(){
+      // 같은 이미지를 다시 찾아서
+      let img = document.getElementById("trump");
+      // 원래 크기로 되돌린다
+      img.style.width = "225px";
+      img.style.height = "313px";
+    }
+
+    /*
+    [이벤트 연결 방법 2] 자바스크립트로 연결하기
+
+    1) getElementById("trump")
+       → id가 trump인 태그를 찾아온다.
+
+    2) addEventListener("이벤트이름", 함수이름)
+       → 그 태그에 이벤트를 연결한다.
+       → "mousedown" : 마우스 버튼을 누를 때
+       → "mouseup"   : 마우스 버튼을 뗄 때
+
+    ★ 주의: 함수 이름 뒤에 ()를 붙이지 않는다.
+       mousedownFunc   ← 맞음 (나중에 이벤트가 생기면 실행)
+       mousedownFunc() ← 틀림 (지금 바로 실행해 버림)
+    */
+    let trump = document.getElementById("trump");
+    trump.addEventListener("mousedown", mousedownFunc);
+    trump.addEventListener("mouseup", mouseupFunc);
+  </script>
+</body>
+</html>
