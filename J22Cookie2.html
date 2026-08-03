@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+  /*
+  쿠키(Cookie) : 웹사이트가 사용자의 브라우저에 저장하는 작은 데이터
+  파일. 주로 로그인, 사용자 설정 저장 등의 기능에 사용된다. 
+
+  쿠키 생성 : 매개변수로 전달되는 exp가 양수면 미래의 시간으로 설정되므로 
+  쿠키가 생성된다. 반대로 음수라면 과거의 시간으로 설정되므로 쿠키는
+  삭제된다. 쿠키는 웹 브라우적를 닫아도 즉시 삭제되지 않고 유효기간 동안 
+  유지된다. 
+  */
+  //3개의 매개변수는 순서대로 쿠키명, 쿠키값, 유효시간(날짜단위)
+  var setCookie = function(name, value, exp) {
+      //유효시간 설정을 위해 Date 객체 생성 
+      var date = new Date();
+      //타임스탬프에 매개변수로 전달된 exp(날짜단위)와 연산하여 유효기간 설정
+      date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+      //쿠키 생성 : 쿠키명=쿠키값;유효시간=xx;적용할경로=yy;
+      document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+  };
+  /*
+  쿠키 읽기 : 쿠키는 ;(세미콜론)으로 구분되므로 1차 split 한 후 =(이퀄)
+  로 2차 split 하여 쿠키값을 읽을 수 있다.
+  */
+  var getCookie = function(name) {
+      //1차 split으로 배열 생성 
+      var value = document.cookie.split(";");
+      //항목의 갯수만큼 반복
+      for(var i = 0; i < value.length; i++) {
+          //2차 split으로 쿠키명과 값을 분리 
+          var unit = value[i].trim();
+          var cookieVal = unit.split('=');
+          //매개변수로 전달된 쿠키명과 비교
+          if(cookieVal[0] == name) {
+              //해당 쿠키값을 반환한다.
+              return unescape(cookieVal[1]);
+          }
+      }
+      //찾는 이름이 없다면 null을 반환한다.
+      return null;
+  };
+
+  //쿠키를 만들기 위한 함수
+  function makeCookie() {
+      //사용자가 입력한 값을 읽어온다.
+      var cName = document.getElementById('cName').value;
+      var cValue = document.getElementById('cValue').value;
+      //쿠키명, 쿠키값, 유효기간은 1일로 설정하여 쿠키 생성 
+      setCookie(cName, cValue, 1);
+      alert('쿠기가 생성되었습니다.');
+      //F5을 눌러 새로고침 하듯 화면을 리플레쉬 한다. 
+      location.reload();
+  }
+  //쿠키값을 읽기 위한 함수
+  function readCookie() {
+      //입력상자로부터 읽을 쿠키명을 가져온다.
+      var cName = document.getElementById('cName').value;
+      //해당 이름으로 생성된 쿠키를 읽어온다.
+      var readValue = getCookie(cName);
+      if(readValue == Null){
+          alert("쿠키값:"+readValue);
+      }
+  }
+
+  //쿠키 삭제하기 : 과거의 시간으로 설정하면 삭제된다.
+  function deleteCookie() {
+      var cName = document.getElementById('cName').value;
+      //유효기간을 -1, 즉 어제의 날짜로 설정한다.
+      setCookie(cName, cValue, -1);
+      alert('쿠키가 삭제되었습니다.');
+      location.reload();
+  }
+
+  /*
+  [연습문제] 팝업창 제어
+  - 체크박스 클릭 시 팝업을 닫고, 유효기간 1일인 쿠키를 생성한다.
+  - 쿠키가 있으면 새로고침해도 팝업이 뜨지 않는다.
+  - 개발자모드에서 쿠키를 삭제하면 팝업이 다시 표시된다.
+  */
+
+  //체크박스 클릭 시 호출되는 함수 (onclick="closeWin()")
+  function closeWin() {
+      //쿠키명 popupWin, 값 hide, 유효기간 1일로 쿠키 생성
+      setCookie('popupWin', 'hide', 1);
+      //레이어 팝업창을 화면에서 숨긴다.
+      document.getElementById('popupWin').style.display = 'none';
+  }
+
+  //문서 로드가 완료되면 실행되는 이벤트 핸들러
+  window.onload = function() {
+      //popupWin 쿠키가 존재하는지 확인한다.
+      if(getCookie('popupWin') != null) {
+          //쿠키가 있으면 '오늘 하루 열지 않음'을 선택한 것이므로 팝업을 숨긴다.
+          document.getElementById('popupWin').style.display = 'none';
+      }
+  };
+
+  //드래그 중인 팝업 요소와 마우스-팝업 간격을 저장할 변수
+  var dragTarget = null;
+  var gapX = 0;
+  var gapY = 0;
+
+  //팝업 제목바를 누르면 드래그 시작
+  function dragStart(e) {
+      //텍스트 드래그 선택 방지
+      e.preventDefault();
+      dragTarget = document.getElementById('popupWin');
+      //마우스 좌표와 팝업 left/top 차이를 저장 (잡은 위치 유지)
+      gapX = e.clientX - dragTarget.offsetLeft;
+      gapY = e.clientY - dragTarget.offsetTop;
+      //document에 이동·종료 이벤트 등록 (팝업 밖에서도 드래그 가능)
+      document.onmousemove = dragMove;
+      document.onmouseup = dragEnd;
+  }
+
+  //마우스 이동 시 팝업 위치 갱신
+  function dragMove(e) {
+      if(dragTarget) {
+          dragTarget.style.left = (e.clientX - gapX) + 'px';
+          dragTarget.style.top = (e.clientY - gapY) + 'px';
+      }
+  }
+
+  //마우스 버튼을 놓으면 드래그 종료
+  function dragEnd() {
+      document.onmousemove = null;
+      document.onmouseup = null;
+      dragTarget = null;
+  }
+  </script>
+</head>
+<style>
+.popupWin{
+    width: 200px;height: 250px;background-color: rgb(239, 204, 5);
+    color: rgb(17, 17, 16);font-size: 1em;text-align: center;
+    position: absolute;top: 70px;left: 50px;
+}
+/* 제목바: 잡고 끌어 이동할 영역 */
+.popupTitle{
+    padding: 12px 0;background-color: rgba(248, 0, 248, 0.15);
+    cursor: move;user-select: none;
+}
+.popupBody{
+    padding-top: 170px;line-height: 1.6;
+}
+</style>
+<!-- 
+        연습문제] body영역에는 <div>태그로 만든 레이어 팝업창이 존재한다. 
+            체크박스를 클릭하면 창이 닫히면서 유효기간이 하루인 쿠키를 생성하자. 
+            쿠키가 만들어지면 웹브라우저를 새로고침해도 팝업창이 뜨지 않아야한다. 
+            개발자모드에서 쿠키를 지우면 팝업창은 다시 뜨게된다.  
+--> 
+<body>
+    <h2>쿠키로 팝업창 제어하기</h2>
+    <p>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+        본문의 내용은 이와 같습니다. <br>
+    </p>
+    <div class="popupWin" id="popupWin" style="display:block;">
+        <!-- 제목바 mousedown → dragStart()로 팝업 이동 -->
+        <div class="popupTitle" onmousedown="dragStart(event)">오늘의 팝업창</div>
+        <div class="popupBody">
+        <!-- 체크 시 closeWin() 호출 → 쿠키 생성 후 팝업 닫기 -->
+        <input type="checkbox" id="popChk" 
+            onclick="closeWin();"> 오늘하루열지않음
+        </div>
+    </div>
+</body>
+</html>
