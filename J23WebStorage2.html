@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="text/javascript">
+  //전역변수 생성 및 문서 로드시 DOM요소 얻어옴
+  var key, val, result;
+  window.onload = function(){
+      key = document.getElementById('key');
+      val = document.getElementById('val');
+      result = document.getElementById('result');
+  }
+  //스토리지 저장
+  var save = function(){
+      //key와 value의 빈값 체크 
+      if (key.value == ""){
+          //만약 빈값이면 이 함수의 실행 종료 
+          alert("키를 입력하세요."); key.focus();
+          return;
+      }
+      if (val.value == ""){
+          alert("값을 입력하세요."); val.focus();
+          return;
+      }
+      //입력된 값이 있을때 로컬스토리지에 데이터 저장 
+      localStorage.setItem(key.value, val.value);
+      alert("로컬 스토리지에 저장되었음");
+      //새로운 입력을 위해 입력상자의 내용을 삭제 
+      key.value = "";
+      val.value = "";
+      //키 입력상자로 포커싱 
+      key.focus();
+    }
+    //Key를 이용해서 저장된 스토리지 조회
+    var selectOne = function(){
+      if (key.value == ""){
+          alert("조회할 키를 입력하세요");
+          key.focus(); return;
+      }
+      //입력한 Key를 통해 데이터 인출
+      var sValue = localStorage.getItem(key.value);
+      //인출한 데이터는 경고창으로 출력 
+      alert("'" + key.value + "'로 조회한 결과:" +sValue);
+    }
+    //스토리지에 저장된 모든 정보를 배열로 조회
+    var selectAll = function(){
+        //textarea에 기존 내용이 있다면 비움 처리 
+        result.value = "";
+        //localStorage 객체를 이용해서 저장된 갯수만큼 반복
+        for (var i = 0; i < localStorage.length; i++){
+            //key() 함수에 인덱스를 부여해서 Key를 먼저 조회한 후 Value를 인출한다. 
+            result.value += localStorage.key(i) + " : " + localStorage.getItem(localStorage.key(i)) + "\r\n";
+        }
+    }Key를 통해 특정 항목 삭제
+    var removeOne = function() {
+        if (key.value == ""){
+            alert("삭제할 키를 입력하세요");
+            key.focus(); return;
+        }
+        //입력한 Key에 해당하는 데이터 삭제
+        localStorage.removeItem(key.value);
+        alert("해당 키가 삭제되었습니다.");
+    }
+    //스토리지에 저장된 모든 정보를 한꺼번에 삭제 
+    var removeAll = function(){
+        localStorage.clear();
+        alert("웹스토리지에 저장된 모든데이터가" + " 삭제되었습니다.");
+    }
+  </script>
+</head>
+
+<body>
+    <h2>웹스토리지 - 저장/조회/삭제</h2>
+    <table border="1">
+        <tr>
+            <td style="width: 15%;">키(Key)</td>
+             <td>
+                <input type="text" id="key">
+             </td>
+        </tr>
+        <tr>
+          <td>값(Value)</td>
+          <td>
+            <input type="text" id="val">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center;">
+              <input type="button" value="저장하기" onclick="save();">
+              <input type="button" value="하나 삭제" onclick="removeOne();">
+              <input type="button" value="모두 삭제" onclick="removeAll();">
+              <input type="button" value="키로 조회" onclick="selectOne();">
+              <input type="button" value="모두 조회" onclick="selectAll();">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <textarea id="result" style="width: 100%; height: 200px;"></textarea>
+          </td>
+        </tr>
+    </table>
+</body>
+</html>
