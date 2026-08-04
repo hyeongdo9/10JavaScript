@@ -169,6 +169,33 @@
         본문의 내용은 이와 같습니다. <br>
         본문의 내용은 이와 같습니다. <br>
     </p>
+    <script>
+    //문서의 로드가 완료되면 쿠키를 읽어서 레이어 팝업창을 제어한다.
+    window.onload = function(){
+        //팝업창 제어를 위한 쿠키를 읽어서 변수에 저장 
+        let popupWinCookie = getCookie('popupWin');
+        //div로 만든 레이어 팝업창의 DOM을 얻어옴
+        let popupWin = document.getElementById('popupwin');
+        //쿠키값이 off라면 팝업창을 숨김처리한다.
+        if(popupWinCookie == 'off'){
+            popupWin.style.display = 'none';
+        }
+        else{
+            popupWin.style.display = 'block';
+        }
+    }
+    //레이어 팝업창의 체크박스를 클릭하면 호출
+    const closeWin = () => {
+        //유효기간이 1일인 쿠키생성: popup, 값 off
+        setCookie('popup', 'off', 1);
+        //레이어 팝업창은 즉시 숨김처리 
+        document.getElementById('popupWin').style.display = 'none';
+        //display속성을 none으로 설정하면 화면에서 숨김처리된다. 
+    }
+    </script>
+    <!-- display를 block으로 설정하면 문서가 로드되었을때 보임처리
+     되었다가 쿠키를 통해 숨김처리하게 되므로 깜빡이는 현상이 생긴다.
+     따라서 처음부터 none으로 설정하는게 좋다.  -->
     <div class="popupWin" id="popupWin" style="display:block;">
         <!-- 제목바 mousedown → dragStart()로 팝업 이동 -->
         <div class="popupTitle" onmousedown="dragStart(event)">오늘의 팝업창</div>
